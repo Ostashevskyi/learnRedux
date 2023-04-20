@@ -1,11 +1,10 @@
 import { products } from "./products.js";
 
 
-
 function product_cards() {
     const productsContainer = document.querySelector('.products');
     const productsArr = Object.values(products);
-    
+
     productsArr.forEach(el => {
         productsContainer.innerHTML += `
             <div class="${el.name} product">

@@ -1,17 +1,16 @@
-import CreateStore from "./store.js"
+import CreateStore from "./store/store.js"
 import product_cards from "./UI.js";
 import { render } from "./render.js";
 import { products } from "./products.js";
+import { addProduct } from "./store/actions.js";
 
-product_cards();
 
 export const shopcart = new CreateStore();
 
+product_cards();
+
 Array.from(document.querySelectorAll('.plus')).map(el => el.addEventListener('click', (event) => {
-    shopcart.dispatch({
-        type: "ADD_PRODUCT",
-        payload: products[event.target.value],
-    });
+    addProduct(products[event.target.value])
     render(event.target)
 }))
 
