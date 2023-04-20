@@ -1,5 +1,3 @@
-import { products } from "./products.js";
-
 class CreateStore {
     constructor () {
         this.state = {
@@ -7,52 +5,38 @@ class CreateStore {
             totalPrice: 0,
             count: {}
         }
-        this.$shopListUl = document.querySelector('.shoplist');
-        this.$totalPrgh = document.querySelector('.total');
     }
 
-    shoplistReducer(action, event) {
+    shoplistReducer(state = this.state, action) {
+        const payload = action.payload;
+
         switch(action.type) {
             case "ADD_PRODUCT":
-                products.forEach(el => {
-                    if (el.name === event.value) {
-                        this.state.shopList.push(el);
+                state.shopList.push(payload);
 
-                        this.state.totalPrice += el.price;
+                state.totalPrice += payload.price;
 
-                        this.state.count[el.name] = this.state.shopList.filter(product => el.name === product.name).length;
-                    }
-                })
-                this.render(event);
+                state.count[payload.name] = this.state.shopList.filter(el => payload.name === el.name).length;
+
                 break
-            
-            case "REMOVE_PRODUCT":
-                const shopList = this.state.shopList;
 
-                shopList.forEach((el, index) => {
-                    if (el.name === event.value) {
-                        this.state.totalPrice -= el.price;
-                        
-                        this.state.shopList.splice(index, 1);
-                        
-                        this.state.count[el.name] -= 1;
-                    }
-                })
-                this.render(event);
+            case "REMOVE_PRODUCT":
+                if (state.shopList.includes(payload)) {
+
+                    state.totalPrice -= payload.price;
+    
+                    state.shopList.splice(state.shopList.indexOf(payload), 1);                      
+                    
+                    state.count[payload.name] -= 1;
+                } 
+
                 break 
         }
+
     }
 
-    dispatch(action, event) {
-        this.shoplistReducer(action, event);
-    }
-
-    render(event) {
-        const state = this.state;
-
-        this.$totalPrgh.innerHTML = `${state.totalPrice} UAH`;
-
-        document.querySelector(`.count${event.value}`).innerHTML = `In your cart: ${state.count[event.value]}`
+    dispatch(action) {
+        this.shoplistReducer(this.state, action);
     }
 }
 
