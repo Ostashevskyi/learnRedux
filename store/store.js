@@ -1,4 +1,5 @@
 import { SHOP_LIST, TOTAL_PRICE } from "./stateKeys.js";
+import { ADD_PRODUCT, REMOVE_PRODUCT } from "./actionTypes.js";
 
 class CreateStore {
     constructor () {
@@ -12,7 +13,7 @@ class CreateStore {
         const { payload } = action;
 
         switch(action.type) {
-            case "ADD_PRODUCT":
+            case ADD_PRODUCT:
                 state[SHOP_LIST] = [...state[SHOP_LIST], payload];
 
                 state[TOTAL_PRICE] = state[SHOP_LIST]
@@ -21,7 +22,7 @@ class CreateStore {
 
                 break
 
-            case "REMOVE_PRODUCT":
+            case REMOVE_PRODUCT:
                 const elIndex = state[SHOP_LIST].indexOf(payload);
                 state[SHOP_LIST] = state[SHOP_LIST].filter((el, index) => index !== elIndex)                    
                     
@@ -35,7 +36,7 @@ class CreateStore {
 
                 break 
         }
-    }
+     }
 
     dispatch(action) {
         this.shoplistReducer(this.state, action);
